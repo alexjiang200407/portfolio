@@ -1,0 +1,50 @@
+import { useEffect, useState } from 'react';
+import './Loader.css'
+
+function LoadingScreen({ hidden, children }) {
+  const [transitionDone, setTransitionDone] = useState(false);
+
+  useEffect(() => {
+    if (hidden) {
+      setTransitionDone(false); // Wait for transition to end before showing children
+    }
+  }, [hidden]);
+
+  const handleTransitionEnd = () => {
+    if (hidden) {
+      setTransitionDone(true);
+    }
+  };
+  return (
+    <div>
+      <div
+        id='loader'
+        className={ hidden? 'hidden' : ''}
+        onTransitionEnd={handleTransitionEnd}
+      >
+        <div className="blobs">
+          <div className="blob-center"></div>
+          <div className="blob"></div>
+          <div className="blob"></div>
+          <div className="blob"></div>
+          <div className="blob"></div>
+          <div className="blob"></div>
+          <div className="blob"></div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <defs>
+            <filter id="goo">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+              <feBlend in="SourceGraphic" in2="goo" />
+            </filter>
+          </defs>
+        </svg>
+        <p id='loading-label'>Loading Assets</p>
+      </div>
+      {transitionDone && children}
+    </div>
+  );
+}
+
+export default LoadingScreen
