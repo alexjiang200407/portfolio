@@ -16,6 +16,7 @@ function LoadingScreen({ hidden, children }) {
     }
   };
   return (
+    <>
     <div>
       <div
         id='loader'
@@ -42,8 +43,9 @@ function LoadingScreen({ hidden, children }) {
         </svg>
         <p id='loading-label'>Loading Assets</p>
       </div>
-      {transitionDone && children}
     </div>
+    {transitionDone && children}
+    </>
   );
 }
 

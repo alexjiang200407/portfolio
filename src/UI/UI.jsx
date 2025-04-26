@@ -3,7 +3,7 @@ import Header from "./Header";
 
 
 
-export default function UI({ }) {
+export default function UI({children}) {
   return (
     <div
       style={{
@@ -14,7 +14,9 @@ export default function UI({ }) {
         overflowY: 'auto',
         width: '100%',
         height: '100vh'
-      }}>
+      }}
+    >
+      {children}
       <Header />
       <div style={{ height: '200vh' }}>
 
