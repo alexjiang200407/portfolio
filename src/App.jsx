@@ -1,13 +1,15 @@
-import { Stats } from '@react-three/drei';
+import { Stats, Text, Text3D } from '@react-three/drei';
 import './App.css'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
 import { EffectComposer, N8AO, Noise } from "@react-three/postprocessing"
-import { OBJLoader } from 'three-stdlib'
+import { Font, FontLoader, OBJLoader, TextGeometry, TTFLoader } from 'three-stdlib'
 import LoadingScreen from './Loader';
-import { Physics } from '@react-three/cannon';
 import UI from './UI/UI';
+// import FlatText from './FlatText';
+// import font from './signature.json'
+import helvetiker from 'three/examples/fonts/helvetiker_regular.typeface.json';
 
 function Model({ assetsMap }) {
   const obj = assetsMap['rapid.obj']
@@ -55,24 +57,28 @@ const assets = {
   'material0_occlusion.jpg': THREE.TextureLoader,
 }
 
-
-
 function Movie({ assetsMap }) {
   return (
+    <>
     <group>
-      <Physics gravity={[0, 0, 0]}>
-        <Model assetsMap={assetsMap} />
-        <FillLight />
-        <spotLight
-          position={[-5, 0, -5]}
-          angle={0.3}
-          penumbra={0.5}
-          intensity={3.5}
-          castShadow
-        />
-        {/* <InteractiveText mouse={cursor} text={"AlexJiang"} positions={[0, 0.7, 0.9, 1.5, 4, 4.7, 4.9, 5.4, 5.9]}/> */}
-      </Physics>
+      <Model assetsMap={assetsMap} />
+      <FillLight />
+      <spotLight
+        position={[-5, 0, -5]}
+        angle={0.3}
+        penumbra={0.5}
+        intensity={3.5}
+        castShadow
+      />
+      <Text
+        fontSize={2}
+        position={[0, 0, -2.5]}
+        font='./signature.woff'
+      >
+        Alex Jiang
+      </Text>
     </group>
+    </>
   )
 }
 
