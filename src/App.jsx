@@ -3,10 +3,11 @@ import './App.css'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
-import { Bloom, EffectComposer, N8AO } from "@react-three/postprocessing"
+import { EffectComposer, N8AO, Noise } from "@react-three/postprocessing"
 import { OBJLoader } from 'three-stdlib'
 import LoadingScreen from './Loader';
-
+import { Physics } from '@react-three/cannon';
+import UI from './UI/UI';
 
 function Model({ assetsMap }) {
   const obj = assetsMap['rapid.obj']
@@ -19,7 +20,7 @@ function Model({ assetsMap }) {
   return <primitive object={obj} />
 }
 
-const showStats = process.env.NODE_ENV !== 'production';
+const showStats = process.env.NODE_ENV !== 'production' && false;
 const cursor = {
   x: 0,
   y: 0
@@ -51,7 +52,7 @@ function FillLight() {
 const assets = {
   'rapid.obj': OBJLoader,
   'material0_normal.jpg': THREE.TextureLoader,
-  'material0_occlusion.jpg': THREE.TextureLoader
+  'material0_occlusion.jpg': THREE.TextureLoader,
 }
 
 
@@ -59,15 +60,18 @@ const assets = {
 function Movie({ assetsMap }) {
   return (
     <group>
-      <Model assetsMap={assetsMap} />
-      <FillLight />
-      <spotLight
-        position={[-5, 0, -5]}
-        angle={0.3}
-        penumbra={0.5}
-        intensity={3.5}
-        castShadow
-      />
+      <Physics gravity={[0, 0, 0]}>
+        <Model assetsMap={assetsMap} />
+        <FillLight />
+        <spotLight
+          position={[-5, 0, -5]}
+          angle={0.3}
+          penumbra={0.5}
+          intensity={3.5}
+          castShadow
+        />
+        {/* <InteractiveText mouse={cursor} text={"AlexJiang"} positions={[0, 0.7, 0.9, 1.5, 4, 4.7, 4.9, 5.4, 5.9]}/> */}
+      </Physics>
     </group>
   )
 }
@@ -108,8 +112,16 @@ function App() {
   return (
     <div>
       <LoadingScreen hidden={assetsMap !== null}>
+        <UI />
         <Canvas
-          dpr={[1, 2]} style={{ height: '100vh', width: '100vw' }}
+          dpr={[1, 2]}
+          style={{
+            height: '100vh',
+            width: '100%',
+            position: 'fixed',
+            top: 0, left: 0, zIndex: 0,
+            pointerEvents: 'none',
+          }}
           camera={{ position: [0, 0, 5] }}
           gl={{
             physicallyCorrectLights: true,
@@ -118,13 +130,14 @@ function App() {
           }}
         >
           {showStats && <Stats />}
-          <color attach="background" args={['black']} />
+          <color attach="background" args={[0x080808]} />
           <Movie assetsMap={assetsMap} />
           <EffectComposer>
             <N8AO color="black" aoRadius={2} intensity={1.15} />
-            <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={1} />
+            <Noise opacity={0.03}/>
           </EffectComposer>
         </Canvas>
+
       </LoadingScreen>
     </div>
   );
