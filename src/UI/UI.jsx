@@ -1,27 +1,26 @@
-import Footer from "./Footer";
-import Header from "./Header";
+import { Html } from "@react-three/drei"
+import Header from "./Header"
+import Footer from "./Footer"
+import AOS from "aos"
+import 'aos/dist/aos.css';
 
+AOS.init()
 
-
-export default function UI({children}) {
+function UI() {
   return (
-    <div
+    <Html
       style={{
-        zIndex: 100,
         color: 'white',
-        position: 'relative',
-        overflowX: 'hidden',
-        overflowY: 'auto',
-        width: '100%',
-        height: '100vh'
-      }}
-    >
-      {children}
+        display: 'block'
+      }}>
       <Header />
-      <div style={{ height: '200vh' }}>
+      <Footer />
+      <div style={{width: '100vw', marginTop: '100vh'}}>
+        <h1>Hello World</h1>
 
       </div>
-      <Footer />
-    </div>
+    </Html>
   )
 }
+
+export default UI
