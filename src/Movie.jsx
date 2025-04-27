@@ -1,60 +1,55 @@
-import React, { useEffect, useRef } from "react";
-import DavidBust from './models/DavidBust';
-import { Html, ScrollControls, Stats } from '@react-three/drei';
-import './App.css'
+import { Html, Stats } from '@react-three/drei'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { EffectComposer, N8AO, Noise } from '@react-three/postprocessing'
+import { useRef } from 'react'
 import * as THREE from 'three'
-import { Canvas, useFrame } from '@react-three/fiber';
-import { EffectComposer, N8AO, Noise } from "@react-three/postprocessing"
+import DavidBust from './models/DavidBust'
+import './App.css'
 
-
-
-const showStats = process.env.NODE_ENV !== 'production';
+const SHOW_STATS = true
 
 function FillLight() {
-  const fillLight = useRef();
+  const fillLight = useRef()
 
   useFrame((state, delta) => {
-    const parallaxX = (state.pointer.x * 0.5);
-    const parallaxY = (state.pointer.y * 0.5);
+    const parallaxX = (state.pointer.x * 0.5)
+    const parallaxY = (state.pointer.y * 0.5)
     fillLight.current.position.y += (parallaxY * 8 - fillLight.current.position.y + 2) * delta
     fillLight.current.position.x += (parallaxX * 8 - fillLight.current.position.x) * 2 * delta
   })
 
   return (
     <pointLight
-      color={0xffffff}
+      color={0xFFFFFF}
       intensity={5}
       distance={4}
       decay={3}
       ref={fillLight}
     />
-  );
+  )
 }
-
 
 function Gfx({ assetsMap }) {
   return (
     <>
       <group>
-          <DavidBust
-            assetsMap={assetsMap}
-          />
-          <FillLight />
-          <spotLight
-            position={[-5, 0, -5]}
-            angle={0.3}
-            penumbra={0.5}
-            intensity={3.5}
-            castShadow
-          />
+        <DavidBust
+          assetsMap={assetsMap}
+        />
+        <FillLight />
+        <spotLight
+          position={[-5, 0, -5]}
+          angle={0.3}
+          penumbra={0.5}
+          intensity={3.5}
+          castShadow
+        />
       </group>
     </>
   )
 }
 
-
-export default function Movie({assetsMap}) {
-
+export default function Movie({ assetsMap }) {
   return (
     <div
       style={{
@@ -67,7 +62,7 @@ export default function Movie({assetsMap}) {
       }}
     >
       <Canvas
-        id='three'
+        id="three"
         dpr={[1, 2]}
         camera={{ position: [0, 0, 0] }}
         gl={{
@@ -76,13 +71,13 @@ export default function Movie({assetsMap}) {
           toneMapping: THREE.ACESFilmicToneMapping,
         }}
       >
-        {showStats && <Stats />}
+        {SHOW_STATS && <Stats />}
         <color attach="background" args={[0x080808]} />
         <Gfx assetsMap={assetsMap} />
         <Html
           style={{
             width: '100vw',
-            height: '100vh'
+            height: '100vh',
           }}
         >
           <div
@@ -92,7 +87,7 @@ export default function Movie({assetsMap}) {
               width: '100%',
               fontSize: '2rem',
               textAlign: 'center',
-              fontFamily: 'SaolDisplay'
+              fontFamily: 'SaolDisplay',
             }}
           >
             <h1>ALEX JIANG</h1>
@@ -104,11 +99,11 @@ export default function Movie({assetsMap}) {
               width: '100%',
               fontSize: '2rem',
               textAlign: 'center',
-              fontFamily: 'SaolDisplay'
+              fontFamily: 'SaolDisplay',
             }}
           >
             <h3>Designer & Programmer</h3>
-            <h4 style={{fontSize: '1rem'}}>Based in Sydney, Australia</h4>
+            <h4 style={{ fontSize: '1rem' }}>Based in Sydney, Australia</h4>
           </div>
         </Html>
         <EffectComposer>

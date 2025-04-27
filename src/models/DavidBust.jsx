@@ -1,7 +1,5 @@
-import { Float, useScroll } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
-import gsap from 'gsap';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { Float } from '@react-three/drei'
+import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
 function DavidBust({ assetsMap }) {
@@ -9,14 +7,14 @@ function DavidBust({ assetsMap }) {
   const material = new THREE.MeshStandardMaterial({
     normalMap: assetsMap['material0_normal.jpg'],
     aoMap: assetsMap['material0_occlusion.jpg'],
-  });
-  obj.children[0].material = material;
+  })
+  obj.children[0].material = material
 
   const ref = useRef(null)
 
   useEffect(() => {
     ref.current.children[0].geometry.center()
-  }, [ref.current])
+  }, [ref])
 
   return (
     <Float
@@ -30,6 +28,5 @@ function DavidBust({ assetsMap }) {
     </Float>
   )
 }
-
 
 export default DavidBust

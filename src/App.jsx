@@ -1,15 +1,9 @@
-import { Html, ScrollControls, Stats } from '@react-three/drei';
-import './App.css'
+import { useEffect, useState } from 'react'
 import * as THREE from 'three'
-import { Canvas, useFrame } from '@react-three/fiber';
-import { createElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { EffectComposer, N8AO, Noise } from "@react-three/postprocessing"
-import { CSS2DObject, CSS2DRenderer, CSS3DObject, OBJLoader } from 'three-stdlib'
-import LoadingScreen from './Loader';
-import Movie from './Movie';
-
-
-
+import { OBJLoader } from 'three-stdlib'
+import LoadingScreen from './Loader'
+import Movie from './Movie'
+import './App.css'
 
 const assets = {
   'rapid.obj': OBJLoader,
@@ -18,17 +12,17 @@ const assets = {
 }
 
 function App() {
-  const [assetsMap, setAssetMap] = useState(null);
+  const [assetsMap, setAssetMap] = useState(null)
   useEffect(() => {
-    Promise.all(Object.entries(assets).map(([key, loader]) => new Promise(resolve => new loader()
-      .load(key, asset => resolve({ [key]: asset }))))
+    Promise.all(Object.entries(assets).map(([key, Loader]) => new Promise(resolve => new Loader()
+      .load(key, asset => resolve({ [key]: asset })))),
     )
-      .then(data => {
+      .then((data) => {
         setAssetMap(data.reduce((acc, obj) => {
           Object.entries(obj).forEach(([a, b]) => {
-            acc[a] = b;
-          });
-          return acc;
+            acc[a] = b
+          })
+          return acc
         }, {}))
       })
   }, [])
@@ -36,11 +30,11 @@ function App() {
   return (
     <div>
       <LoadingScreen hidden={assetsMap !== null}>
-        <Movie assetsMap={assetsMap}/>
+        <Movie assetsMap={assetsMap} />
         <div>Hello World</div>
       </LoadingScreen>
     </div>
-  );
+  )
 }
 
 export default App
