@@ -53,7 +53,6 @@ export default function Movie({ assetsMap }) {
   return (
     <div
       style={{
-        // zIndex: 100,
         color: 'white',
         overflowX: 'hidden',
         overflowY: 'auto',
@@ -75,6 +74,7 @@ export default function Movie({ assetsMap }) {
         <color attach="background" args={[0x080808]} />
         <Gfx assetsMap={assetsMap} />
         <Html
+          className="three-ui"
           style={{
             width: '100vw',
             height: '100vh',

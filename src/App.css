@@ -67,6 +67,9 @@ h1, h2, h3, h4, h5 {
   animation: shine 1s linear infinite;
 }
 
+.three-ui {
+  user-select: none;
+}
 
 /* ::-webkit-scrollbar {
   display: none;
