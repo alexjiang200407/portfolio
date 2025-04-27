@@ -1,14 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import Footer from "./UI/Footer";
-import Header from "./UI/Header";
-import Signature from './Signature';
 import DavidBust from './models/DavidBust';
 import { Html, ScrollControls, Stats } from '@react-three/drei';
 import './App.css'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, N8AO, Noise } from "@react-three/postprocessing"
-import UI from "./UI/UI";
 
 
 
@@ -40,10 +36,6 @@ function Gfx({ assetsMap }) {
   return (
     <>
       <group>
-        <ScrollControls
-          pages={3}
-          damping={0.25}
-        >
           <DavidBust
             assetsMap={assetsMap}
           />
@@ -55,21 +47,6 @@ function Gfx({ assetsMap }) {
             intensity={3.5}
             castShadow
           />
-          <Signature
-            fontSize={2}
-            position={[0, 0, -2.5]}
-            font='./signature.woff'
-          >
-            Alex Jiang
-          </Signature>
-          <Signature
-            fontSize={.15}
-            position={[0, -.45, -1.2]}
-            font='./BridgetLily.woff'
-          >
-            Memento Mori
-          </Signature>
-        </ScrollControls>
       </group>
     </>
   )
@@ -83,7 +60,6 @@ export default function Movie({assetsMap}) {
       style={{
         // zIndex: 100,
         color: 'white',
-        position: 'relative',
         overflowX: 'hidden',
         overflowY: 'auto',
         width: '100%',
@@ -103,7 +79,38 @@ export default function Movie({assetsMap}) {
         {showStats && <Stats />}
         <color attach="background" args={[0x080808]} />
         <Gfx assetsMap={assetsMap} />
-        <UI />
+        <Html
+          style={{
+            width: '100vw',
+            height: '100vh'
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '3vh',
+              width: '100%',
+              fontSize: '2rem',
+              textAlign: 'center',
+              fontFamily: 'SaolDisplay'
+            }}
+          >
+            <h1>ALEX JIANG</h1>
+          </div>
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '8vh',
+              width: '100%',
+              fontSize: '2rem',
+              textAlign: 'center',
+              fontFamily: 'SaolDisplay'
+            }}
+          >
+            <h3>Designer & Programmer</h3>
+            <h4 style={{fontSize: '1rem'}}>Based in Sydney, Australia</h4>
+          </div>
+        </Html>
         <EffectComposer>
           <N8AO color="black" aoRadius={2} intensity={1.15} />
           <Noise opacity={0.03} />

@@ -37,6 +37,7 @@ function App() {
     <div>
       <LoadingScreen hidden={assetsMap !== null}>
         <Movie assetsMap={assetsMap}/>
+        <div>Hello World</div>
       </LoadingScreen>
     </div>
   );
