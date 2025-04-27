@@ -1,16 +1,21 @@
-import { Float } from '@react-three/drei'
+import { Box, Float } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
+import Dissolve from '../shaders/Dissolve'
 
 function DavidBust({ assetsMap }) {
-  const obj = assetsMap['rapid.obj']
-  const material = new THREE.MeshStandardMaterial({
-    normalMap: assetsMap['material0_normal.jpg'],
-    aoMap: assetsMap['material0_occlusion.jpg'],
-  })
-  obj.children[0].material = material
+  const material = useMemo(() => {
+    return new THREE.MeshStandardMaterial({
+      normalMap: assetsMap['material0_normal.jpg'],
+      aoMap: assetsMap['material0_occlusion.jpg'],
+    })
+  }, [assetsMap])
+  const dissolveRef = useRef(null)
+  const geometry = useMemo(() => {
+    return assetsMap['rapid.obj'].children[0].geometry
+  }, [assetsMap])
 
   const ref = useRef(null)
   const [pointerDown, setPointerDown] = useState(false)
@@ -46,10 +51,15 @@ function DavidBust({ assetsMap }) {
         duration: 1,
         ease: 'back.out',
       })
+
+      gsap.to(dissolveRef.current.uProgress, { value: 1, duration: 1, overwrite: true, ease: 'power2.out'})
+
     }
   }, [pointerDown])
 
-  useFrame((state) => {
+  useEffect(() => { gsap.to(dissolveRef.current.uProgress, { value: 1, duration: 3, overwrite: true, ease: 'power2.out'})}, [dissolveRef])
+
+  useFrame(state => {
     if (pointerDown) {
       gsap.to(ref.current.rotation, {
         x: -state.pointer.y * Math.PI / 8,
@@ -65,11 +75,13 @@ function DavidBust({ assetsMap }) {
         duration: 1,
         ease: 'back.out',
       })
+
+      gsap.to(dissolveRef.current.uProgress, { value: Math.max(0.45, 1 - Math.abs(state.pointer.x)), duration: 1, overwrite: true, ease: 'power2.out'})
     }
   })
 
   useEffect(() => {
-    ref.current.children[0].geometry.center()
+    ref.current.geometry.center()
   }, [ref])
 
   return (
@@ -79,8 +91,18 @@ function DavidBust({ assetsMap }) {
       floatIntensity={0.05}
       floatingRange={[0.01, 0.02]}
     >
-      <primitive position={[0, 0, -2]} ref={ref} object={obj} />
-
+      <mesh
+        position={[0, 0, -2]}
+        ref={ref}
+        geometry={geometry}
+        material={material}
+      >
+        <Dissolve
+          progress={1}
+          ref={dissolveRef}
+          baseMaterial={material}
+        />
+      </mesh>
     </Float>
   )
 }

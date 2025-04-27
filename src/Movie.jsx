@@ -1,6 +1,6 @@
-import { Html, Stats } from '@react-three/drei'
+import { Environment, Html, Stats } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { EffectComposer, N8AO, Noise } from '@react-three/postprocessing'
+import { Bloom, EffectComposer, N8AO, Noise } from '@react-three/postprocessing'
 import { useRef } from 'react'
 import * as THREE from 'three'
 import DavidBust from './models/DavidBust'
@@ -41,7 +41,7 @@ function Gfx({ assetsMap }) {
           position={[-5, 0, -5]}
           angle={0.3}
           penumbra={0.5}
-          intensity={3.5}
+          intensity={15.0}
           castShadow
         />
       </group>
@@ -108,8 +108,10 @@ export default function Movie({ assetsMap }) {
         </Html>
         <EffectComposer>
           <N8AO color="black" aoRadius={2} intensity={1.15} />
+          <Bloom luminanceTheshold={1} intensity={0.3} mipMapBlur />
           <Noise opacity={0.03} />
         </EffectComposer>
+        <Environment preset='night' intensity={0.3}/>
       </Canvas>
     </div>
   )
