@@ -1,40 +1,58 @@
-import { useEffect, useState } from 'react'
-import * as THREE from 'three'
-import { OBJLoader } from 'three-stdlib'
-import LoadingScreen from './Loader'
-import Movie from './Movie'
-import './App.css'
-
-const assets = {
-  'rapid.obj': OBJLoader,
-  'material0_normal.jpg': THREE.TextureLoader,
-  'material0_occlusion.jpg': THREE.TextureLoader,
-}
+import { Environment, Html, Scroll, ScrollControls } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { MotionConfig } from "framer-motion";
+import { Leva } from "leva";
+import { Suspense, useEffect, useState } from "react";
+import { Experience } from "./components/Experience";
+import { Interface } from "./components/Interface";
+import { LoadingScreen } from "./components/LoadingScreen";
+import { Menu } from "./components/Menu";
+import { ScrollManager } from "./components/ScrollManager";
+import { framerMotionConfig } from "./config";
 
 function App() {
-  const [assetsMap, setAssetMap] = useState(null)
+  const [section, setSection] = useState(0);
+  const [started, setStarted] = useState(false);
+  const [menuOpened, setMenuOpened] = useState(false);
+
   useEffect(() => {
-    Promise.all(Object.entries(assets).map(([key, Loader]) => new Promise(resolve => new Loader()
-      .load(key, asset => resolve({ [key]: asset })))),
-    )
-      .then((data) => {
-        setAssetMap(data.reduce((acc, obj) => {
-          Object.entries(obj).forEach(([a, b]) => {
-            acc[a] = b
-          })
-          return acc
-        }, {}))
-      })
-  }, [])
+    setMenuOpened(false);
+  }, [section]);
 
   return (
-    <div>
-      <LoadingScreen hidden={assetsMap !== null}>
-        <Movie assetsMap={assetsMap} />
-        <div>Hello World</div>
-      </LoadingScreen>
-    </div>
-  )
+    <>
+      <LoadingScreen started={started} setStarted={setStarted} />
+      <MotionConfig
+        transition={{
+          ...framerMotionConfig,
+        }}
+      >
+        <Canvas shadows camera={{ position: [0, 3, 10], fov: 42 }}>
+          <color attach="background" args={["#e6e7ff"]} />
+          <Environment preset="sunset" />
+          <ScrollControls pages={4} damping={0.1}>
+            <ScrollManager section={section} onSectionChange={setSection} />
+            <Scroll>
+              <Suspense>
+                {started && (
+                  <Experience section={section} menuOpened={menuOpened} />
+                )}
+              </Suspense>
+            </Scroll>
+            <Scroll html>
+              {started && <Interface setSection={setSection} />}
+            </Scroll>
+          </ScrollControls>
+        </Canvas>
+        <Menu
+          onSectionChange={setSection}
+          menuOpened={menuOpened}
+          setMenuOpened={setMenuOpened}
+        />
+      </MotionConfig>
+      <Leva hidden />
+    </>
+  );
 }
 
-export default App
+export default App;
