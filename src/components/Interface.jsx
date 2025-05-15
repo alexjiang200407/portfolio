@@ -73,7 +73,7 @@ const AboutSection = (props) => {
       </motion.p>
       <div className="flex gap-2">
         <motion.button
-          onClick={() => setSection(3)}
+          onClick={() => window.open("https://drive.google.com/file/d/1kgpOlDDb8wTEcExFH0w2ebiE8G3R5NZp/view?usp=sharing", "_blank")}
           className={`bg-indigo-600 text-white py-4 px-8 
       rounded-lg font-bold text-lg mt-2 md:mt-16`}
           initial={{
@@ -89,7 +89,7 @@ const AboutSection = (props) => {
             delay: 2,
           }}
         >
-          Contact me
+          Resume
         </motion.button>
         <motion.button
           onClick={() => window.open("https://drive.google.com/file/d/1hMo7SQ0e5HLX8vTaL8ippgeo1TThUzfs/view?usp=sharing", "_blank")}
