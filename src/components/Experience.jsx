@@ -121,7 +121,6 @@ export function Experience(props) {
       </motion.group>
       <Avatar
         position={[0, -viewport.height + 0.5, 7]}
-        rotation={[0, -Math.PI / 2, 0]}
         animation="Dancing"
       />
       <Float
