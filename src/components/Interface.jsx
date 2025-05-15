@@ -45,11 +45,30 @@ function Section({ children, mobileTop, idx }) {
   )
 };
 
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { SiNexusmods } from "react-icons/si";
+
+function SocialLinks() {
+  return (
+    <div className="flex space-x-4 text-white text-2xl fixed bottom-0 left-0 p-4 sm:left-auto sm:right-0 sm:text-2xl bg-indigo-600 rounded-tr-2xl sm:rounded-tl-2xl sm:rounded-tr-none">
+      <a href="https://github.com/alexjiang200407" target="_blank" rel="noopener noreferrer">
+        <FaGithub />
+      </a>
+      <a href="https://www.linkedin.com/in/alex-jiang-5abb5a310/" target="_blank" rel="noopener noreferrer">
+        <FaLinkedin />
+      </a>
+      <a href="https://next.nexusmods.com/profile/Shdowraithe101/mods" target="_blank" rel="noopener noreferrer">
+        <SiNexusmods />
+      </a>
+    </div>
+  );
+}
+
 function AboutSection() {
   return (
     <Section mobileTop idx={0}>
       <motion.h1
-        className="text-4xl md:text-6xl font-extrabold leading-snug mt-8 md:mt-0"
+        className="text-4xl md:text-6xl font-extrabold leading-snug mt-8 md:mt-2"
         initial={{
           opacity: 0,
           y: 25,
@@ -82,15 +101,16 @@ function AboutSection() {
           delay: 1.5,
         }}
       >
-        I am a programmer and designer
+        I am a programmer, designer
         <br />
-        based in Sydney, Australia
+        and student based in Sydney, Australia
       </motion.p>
       <div className="flex gap-2">
         <motion.button
           onClick={() => window.open('https://drive.google.com/file/d/1kgpOlDDb8wTEcExFH0w2ebiE8G3R5NZp/view?usp=sharing', '_blank')}
-          className={`bg-indigo-600 text-white py-4 px-8 
-      rounded-lg font-bold text-lg mt-2 md:mt-16`}
+          className={`bg-indigo-600 text-white 
+            py-1 px-2 sm:py-4 sm:px-8
+            rounded-lg font-bold text-md sm:text-lg mt-6 md:mt-8`}
           initial={{
             opacity: 0,
             y: 25,
@@ -108,8 +128,9 @@ function AboutSection() {
         </motion.button>
         <motion.button
           onClick={() => window.open('https://drive.google.com/file/d/1hMo7SQ0e5HLX8vTaL8ippgeo1TThUzfs/view?usp=sharing', '_blank')}
-          className={`bg-indigo-600 text-white py-4 px-8 
-      rounded-lg font-bold text-lg mt-2 md:mt-16`}
+          className={`bg-indigo-600 text-white 
+            py-1 px-2 sm:py-4 sm:px-8
+            rounded-lg font-bold text-md sm:text-lg mt-6 md:mt-8`}
           initial={{
             opacity: 0,
             y: 25,
@@ -126,7 +147,7 @@ function AboutSection() {
           Academic Statement
         </motion.button>
       </div>
-
+      <SocialLinks />
     </Section>
   )
 }
@@ -185,11 +206,11 @@ function SkillsSection() {
     <Section idx={1}>
       <motion.div className="w-full" whileInView="visible">
         <h2 className="text-3xl md:text-5xl font-bold text-white">Skills</h2>
-        <div className="mt-8 space-y-4">
+        <div className="mt-1 sm:mt-8 space-y-4">
           {skills.map((skill, index) => (
             <div className="w-full md:w-64 mt-0 !mt-0" key={skill.title}>
               <motion.h3
-                className="text-lg md:text-xl font-bold text-gray-100"
+                className="text-xl sm:text-lg md:text-xl font-bold text-gray-100"
                 initial={{
                   opacity: 0,
                 }}
@@ -228,10 +249,10 @@ function SkillsSection() {
           ))}
         </div>
         <div>
-          <h2 className="text-3xl md:text-5xl font-bold mt-10 text-white">
+          <h2 className="text-3xl md:text-5xl font-bold mt-2 sm:mt-10 text-white">
             Languages
           </h2>
-          <div className="mt-8 space-y-4">
+          <div className="mt-1 sm:mt-8 space-y-4">
             {languages.map((lng, index) => (
               <div className="w-full md:w-64" key={lng.title}>
                 <motion.h3
