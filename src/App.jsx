@@ -4,11 +4,11 @@ import { MotionConfig } from "framer-motion";
 import { Leva } from "leva";
 import { Suspense, useEffect, useState } from "react";
 import { Experience } from "./components/Experience";
-import { Interface } from "./components/Interface";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { Menu } from "./components/Menu";
 import { ScrollManager } from "./components/ScrollManager";
 import { framerMotionConfig } from "./config";
+import Interface from "./components/Interface";
 
 function App() {
   const [section, setSection] = useState(0);
@@ -39,9 +39,9 @@ function App() {
                 )}
               </Suspense>
             </Scroll>
-            <Scroll html>
+            {/* <Scroll html>
               {started && <Interface setSection={setSection} />}
-            </Scroll>
+            </Scroll> */}
           </ScrollControls>
         </Canvas>
         <Menu
@@ -49,6 +49,7 @@ function App() {
           menuOpened={menuOpened}
           setMenuOpened={setMenuOpened}
         />
+        {started && <Interface />}
       </MotionConfig>
       <Leva hidden />
     </>
