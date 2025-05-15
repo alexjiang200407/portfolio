@@ -1,69 +1,64 @@
 import {
   Float,
-  Html,
-  MeshDistortMaterial,
-  MeshWobbleMaterial,
   useScroll,
-} from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
-import { animate, useMotionValue } from "framer-motion";
-import { motion } from "framer-motion-3d";
-import { useEffect, useRef, useState } from "react";
-import { framerMotionConfig } from "../config";
-import { Avatar } from "./Avatar";
-import { Office } from "./Office";
-import { Book } from "./Book";
-import { atom, useAtom } from "jotai";
+} from '@react-three/drei'
+import { useFrame, useThree } from '@react-three/fiber'
+import { animate, useMotionValue } from 'framer-motion'
+import { motion } from 'framer-motion-3d'
+import { useAtom } from 'jotai'
+import { useEffect, useRef } from 'react'
+import { framerMotionConfig } from '../config'
+import { sectionAtom } from '../globals'
+import { Avatar } from './Avatar'
+import { Book } from './Book'
+import { Office } from './Office'
 
-export const sectionAtom = atom(0)
+export function Experience(props) {
+  const { menuOpened } = props
+  const { viewport } = useThree()
+  const data = useScroll()
 
-export const Experience = (props) => {
-  const { menuOpened } = props;
-  const { viewport } = useThree();
-  const data = useScroll();
+  const isMobile = window.innerWidth < 768
+  const responsiveRatio = viewport.width / 12
+  const officeScaleRatio = Math.max(0.5, Math.min(0.9 * responsiveRatio, 0.9))
 
-  const isMobile = window.innerWidth < 768;
-  const responsiveRatio = viewport.width / 12;
-  const officeScaleRatio = Math.max(0.5, Math.min(0.9 * responsiveRatio, 0.9));
+  const [section, setSection] = useAtom(sectionAtom)
 
-  const [section, setSection] = useAtom(sectionAtom);
-
-  const cameraPositionX = useMotionValue();
-  const cameraLookAtX = useMotionValue();
+  const cameraPositionX = useMotionValue()
+  const cameraLookAtX = useMotionValue()
 
   useEffect(() => {
     animate(cameraPositionX, menuOpened ? -5 : 0, {
       ...framerMotionConfig,
-    });
+    })
     animate(cameraLookAtX, menuOpened ? 5 : 0, {
       ...framerMotionConfig,
-    });
-  }, [menuOpened]);
+    })
+  }, [menuOpened, cameraLookAtX, cameraPositionX])
 
-  const characterContainerAboutRef = useRef();
-  const characterGroup = useRef();
+  const characterContainerAboutRef = useRef()
+  const characterGroup = useRef()
 
   useFrame((state) => {
-    let curSection = Math.floor(data.scroll.current * data.pages);
+    let curSection = Math.floor(data.scroll.current * data.pages)
 
     if (curSection > 3) {
-      curSection = 3;
+      curSection = 3
     }
 
     if (curSection !== section) {
-      setSection(curSection);
+      setSection(curSection)
     }
 
-    state.camera.position.x = cameraPositionX.get();
-    state.camera.lookAt(cameraLookAtX.get(), 0, 0);
+    state.camera.position.x = cameraPositionX.get()
+    state.camera.lookAt(cameraLookAtX.get(), 0, 0)
 
-    // const position = new THREE.Vector3();
     if (section === 0) {
       characterContainerAboutRef.current.getWorldPosition(
-        characterGroup.current.position
-      );
+        characterGroup.current.position,
+      )
     }
-  });
+  })
 
   return (
     <>
@@ -71,7 +66,7 @@ export const Experience = (props) => {
         ref={characterGroup}
         rotation={[-3.141592653589793, 1.2053981633974482, 3.141592653589793]}
         scale={[officeScaleRatio, officeScaleRatio, officeScaleRatio]}
-        animate={"" + section}
+        animate={`${section}`}
         transition={{
           duration: 0.6,
         }}
@@ -98,7 +93,7 @@ export const Experience = (props) => {
           },
         }}
       >
-        <Avatar animation={"Typing"} />
+        <Avatar animation="Typing" />
       </motion.group>
       <motion.group
         position={[
@@ -121,12 +116,13 @@ export const Experience = (props) => {
           name="CharacterSpot"
           position={[0.07, 0.16, -0.57]}
           rotation={[-Math.PI, 0.42, -Math.PI]}
-        ></group>
+        >
+        </group>
       </motion.group>
       <Avatar
         position={[0, -viewport.height + 0.5, 7]}
-        rotation={[0, -Math.PI/2 ,0]}
-        animation={"Dancing"}
+        rotation={[0, -Math.PI / 2, 0]}
+        animation="Dancing"
       />
       <Float
         rotation-x={-Math.PI / 8}
@@ -137,5 +133,5 @@ export const Experience = (props) => {
         <Book />
       </Float>
     </>
-  );
-};
+  )
+}
