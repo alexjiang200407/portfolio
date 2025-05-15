@@ -8,32 +8,19 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { SkeletonUtils } from 'three-stdlib'
 
-export function Avatar(props) {
-  const { animation, wireframe } = props;
-  const { headFollow, cursorFollow } = useControls({
-    headFollow: false,
-    cursorFollow: false,
-  });
+export function Avatar({ animation, ...props }) {
   const group = useRef();
 
   const { animations: typingAnimation } = useFBX("animations/Typing.fbx");
+  const { animations: danceAnimation } = useFBX("animations/Dancing.fbx");
 
   typingAnimation[0].name = "Typing";
+  danceAnimation[0].name = "Dancing";
 
   const { actions } = useAnimations(
-    [typingAnimation[0]],
+    [typingAnimation[0], danceAnimation[0]],
     group
   );
-
-  useFrame((state) => {
-    if (headFollow) {
-      group.current.getObjectByName("Head").lookAt(state.camera.position);
-    }
-    if (cursorFollow) {
-      const target = new THREE.Vector3(state.mouse.x, state.mouse.y, 1);
-      group.current.getObjectByName("Spine2").lookAt(target);
-    }
-  });
 
   useEffect(() => {
     actions[animation].reset().fadeIn(0.5).play();
@@ -41,12 +28,6 @@ export function Avatar(props) {
       actions[animation].reset().fadeOut(0.5);
     };
   }, [animation]);
-
-  useEffect(() => {
-    Object.values(materials).forEach((material) => {
-      material.wireframe = wireframe;
-    });
-  }, [wireframe]);
 
   const { scene } = useGLTF('models/avatar.glb')
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
@@ -65,3 +46,4 @@ export function Avatar(props) {
 
 useGLTF.preload("models/avatar.glb");
 useFBX.preload("animations/Typing.fbx");
+useFBX.preload("animations/Dancing.fbx");

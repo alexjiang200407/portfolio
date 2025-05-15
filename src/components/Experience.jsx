@@ -41,17 +41,6 @@ export const Experience = (props) => {
   }, [menuOpened]);
 
   const characterContainerAboutRef = useRef();
-
-  const [characterAnimation, setCharacterAnimation] = useState("Typing");
-  useEffect(() => {
-    setCharacterAnimation("Typing")
-
-    // setCharacterAnimation("Falling");
-    // setTimeout(() => {
-    //   setCharacterAnimation(section === 0 ? "Typing" : "Standing");
-    // }, 600);
-  }, [section]);
-
   const characterGroup = useRef();
 
   useFrame((state) => {
@@ -74,14 +63,6 @@ export const Experience = (props) => {
         characterGroup.current.position
       );
     }
-    // console.log([position.x, position.y, position.z]);
-
-    // const quaternion = new THREE.Quaternion();
-    // characterContainerAboutRef.current.getWorldQuaternion(quaternion);
-    // const euler = new THREE.Euler();
-    // euler.setFromQuaternion(quaternion, "XYZ");
-
-    // console.log([euler.x, euler.y, euler.z]);
   });
 
   return (
@@ -117,7 +98,7 @@ export const Experience = (props) => {
           },
         }}
       >
-        <Avatar animation={characterAnimation} />
+        <Avatar animation={"Typing"} />
       </motion.group>
       <motion.group
         position={[
@@ -142,6 +123,11 @@ export const Experience = (props) => {
           rotation={[-Math.PI, 0.42, -Math.PI]}
         ></group>
       </motion.group>
+      <Avatar
+        position={[0, -viewport.height + 0.5, 7]}
+        rotation={[0, -Math.PI/2 ,0]}
+        animation={"Dancing"}
+      />
       <Float
         rotation-x={-Math.PI / 8}
         floatIntensity={0.5}
