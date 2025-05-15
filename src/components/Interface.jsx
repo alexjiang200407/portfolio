@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { sectionAtom } from "./Experience";
-import { links, pageAtom } from "./Book";
+import { links, pageAtom, pages } from "./Book";
 import { ValidationError, useForm } from "@formspree/react";
 import { motion } from 'framer-motion'
 import { useEffect, useState } from "react";
@@ -274,8 +274,7 @@ const SkillsSection = () => {
 };
 
 const ProjectsSection = () => {
-    const [currentProject] = useAtom(pageAtom);
-    const [currentSection] = useAtom(sectionAtom)
+    const [currentProject, setCurrentProject] = useAtom(pageAtom);
 
     const getCurrentProject = () => {
         if (!links[currentProject] || links[currentProject] === "") return
@@ -288,6 +287,12 @@ const ProjectsSection = () => {
             <div className="flex w-full h-full gap-8 items-center justify-center">
                 <button
                     className={`bg-indigo-600 text-white py-4 px-8 rounded-lg font-bold text-lg mt-2 md:mt-16 translate-y-[40vh]`}
+                    onClick={() => setCurrentProject(0)}
+                >
+                    Start
+                </button>
+                <button
+                    className={`bg-indigo-600 text-white py-4 px-8 rounded-lg font-bold text-lg mt-2 md:mt-16 translate-y-[40vh]`}
                     onClick={() => getCurrentProject()}
                     style={{
                         opacity: !links[currentProject] || links[currentProject] === "" ? 0.3 : 1,
@@ -295,6 +300,12 @@ const ProjectsSection = () => {
                     }}
                 >
                     Visit
+                </button>
+                <button
+                    className={`bg-indigo-600 text-white py-4 px-8 rounded-lg font-bold text-lg mt-2 md:mt-16 translate-y-[40vh]`}
+                    onClick={() => setCurrentProject(pages.length)}
+                >
+                    End
                 </button>
             </div>
         </Section>
